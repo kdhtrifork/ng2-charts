@@ -66,6 +66,10 @@ export class BaseChartDirective implements OnDestroy, OnChanges, OnInit {
     if (this.initFlag) {
       // Check if the changes are in the data or datasets
       if (changes.hasOwnProperty('data') || changes.hasOwnProperty('datasets')) {
+        if (changes['labels']) {
+          this.updateChartLabels(changes['labels'].currentValue);
+        }
+
         if (changes['data']) {
           this.updateChartData(changes['data'].currentValue);
         } else {
@@ -121,6 +125,10 @@ export class BaseChartDirective implements OnDestroy, OnChanges, OnInit {
     };
 
     return new Chart(ctx, opts);
+  }
+
+  private updateChartLabels(newLabels: string[]): void {
+    this.chart.data.labels = newLabels;
   }
 
   private updateChartData(newDataValues: number[] | any[]): void {
